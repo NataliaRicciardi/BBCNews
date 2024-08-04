@@ -1,9 +1,15 @@
 package com.example.bbcnews;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,7 +17,14 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
+
+    private List<BBCNewsItem> newsList;
+    private NewsAdapter adapter;
+
 
     SQLiteDatabase db;
 
@@ -27,20 +40,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
         ListView myList = findViewById(R.id.list_articles);
-    }
 
-    private void loadDataFromDatabase() {
-        MyOpener dbOpener = new MyOpener(this);
-        db = dbOpener.getWritableDatabase();
+        newsList = new ArrayList<>();
 
-        String[] columns = {MyOpener.COL_ID, MyOpener.COL_TITLE, MyOpener.COL_LINK};
+        adapter = new NewsAdapter(this,  newsList);
 
-        Cursor results = db.query(false, MyOpener.TABLE_NAME, columns, null, null,
-                null, null, null, null);
+        myList.setAdapter(adapter);
 
 
 
-        results.close();
     }
 
 }
@@ -61,4 +69,40 @@ class BBCNewsItem {
     public String getTitle() { return title; }
 
     public String getLink() { return link;}
+}
+
+
+class NewsAdapter extends BaseAdapter {
+    private Context context;
+    private final List<BBCNewsItem> newsList;
+    private final LayoutInflater inflater;
+
+    public NewsAdapter(Context context, List<BBCNewsItem> newsList) {
+        this.context = context;
+        this.newsList = newsList;
+        this.inflater = LayoutInflater.from(context);
+    }
+
+    @Override
+    public int getCount() { return newsList.size(); }
+
+    @Override
+    public Object getItem(int position) { return newsList.get(position); }
+
+    @Override
+    public long getItemId(int position) { return position; }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        convertView = inflater.inflate(R.layout.article_item_list, parent, false);
+
+        TextView textView = convertView.findViewById(R.id.article_title);
+
+        BBCNewsItem newsItem = newsList.get(position);
+
+        textView.setText(newsItem.getTitle());
+
+        return convertView;
+    }
+
 }
