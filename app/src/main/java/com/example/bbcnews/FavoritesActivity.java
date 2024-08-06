@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
@@ -76,6 +78,13 @@ public class FavoritesActivity extends AppCompatActivity {
             Intent intent = new Intent(FavoritesActivity.this, MainActivity.class);
             startActivity(intent);
             return true;
+        }
+        else if (id == R.id.help) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Help Menu")
+                    .setMessage("This is your favorites list. Everything you add to it is saved for later.")
+                    .setPositiveButton("Ok", null)
+                    .show();
         }
 
         return super.onOptionsItemSelected(item);
@@ -148,7 +157,12 @@ class FavoritesAdapter extends BaseAdapter {
         BBCNewsItem favoritesItem = favoritesList.get(position);
 
         titleView.setText(favoritesItem.getTitle());
-        linkView.setText(favoritesItem.getLink());
+
+        // linkify the link
+        String link = favoritesItem.getLink();
+        String linkHtml = "<a href=\"" + link + "\">" + link + "</a>";
+        linkView.setText(Html.fromHtml(linkHtml));
+        linkView.setMovementMethod(LinkMovementMethod.getInstance());
 
         deleteButton.setOnClickListener(v -> {
             new AlertDialog.Builder(context)
@@ -170,7 +184,10 @@ class FavoritesAdapter extends BaseAdapter {
         db.delete(MyOpener.TABLE_NAME, MyOpener.COL_ID + "=?", new String[] {String.valueOf(id)});
 
         favoritesList.remove(position);
+
         notifyDataSetChanged();
+
+        Toast.makeText(context, "Item Deleted", Toast.LENGTH_LONG).show();
     }
 }
 

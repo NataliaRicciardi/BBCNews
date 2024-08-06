@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
@@ -66,22 +67,11 @@ public class MainActivity extends AppCompatActivity {
                     JSONObject character = (JSONObject) adapter.getItem(position);
 
                     try {
-                        if (frame == null) {
-                            Intent intent = new Intent(MainActivity.this, EmptyActivity.class);
-                            intent.putExtra("title", character.getString("title"));
-                            intent.putExtra("description", character.getString("description"));
-                            intent.putExtra("link", character.getString("link"));
-                            startActivity(intent);
-                        }
-                        else {
-                            DetailsFragment fragment = DetailsFragment.newInstance(
-                                    character.getString("title"),
-                                    character.getString("description"),
-                                    character.getString("link"));
-                            getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.frame, fragment)
-                                    .commit();
-                        }
+                        Intent intent = new Intent(MainActivity.this, EmptyActivity.class);
+                        intent.putExtra("title", character.getString("title"));
+                        intent.putExtra("description", character.getString("description"));
+                        intent.putExtra("link", character.getString("link"));
+                        startActivity(intent);
                     }
                     catch (Exception e) {
                         throw new RuntimeException(e);
@@ -103,6 +93,13 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, FavoritesActivity.class);
             startActivity(intent);
             return true;
+        }
+        else if (id == R.id.help) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Help Menu")
+                    .setMessage("Click on a news item to get more information and a link to the story")
+                    .setPositiveButton("Ok", null)
+                    .show();
         }
 
         return super.onOptionsItemSelected(item);

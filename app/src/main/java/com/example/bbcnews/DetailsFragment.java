@@ -1,5 +1,6 @@
 package com.example.bbcnews;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,7 +10,10 @@ import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.database.sqlite.SQLiteDatabase;
+import android.widget.Toast;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -59,6 +63,7 @@ public class DetailsFragment extends Fragment {
         TextView viewTitle = view.findViewById(R.id.title_text);
         TextView viewDescription = view.findViewById(R.id.description_text);
         TextView viewLink = view.findViewById(R.id.link_text);
+        Button addToFavoritesButton = view.findViewById(R.id.favorites_button);
 
         if (getArguments() != null) {
             viewTitle.setText(title);
@@ -70,6 +75,24 @@ public class DetailsFragment extends Fragment {
             viewLink.setMovementMethod(LinkMovementMethod.getInstance());
         }
 
+        addToFavoritesButton.setOnClickListener(v -> addToFavorites());
+
         return view;
+    }
+
+    private void addToFavorites() {
+        if (getContext() == null) return;
+
+        MyOpener dbOpener = new MyOpener(getContext());
+        SQLiteDatabase db = dbOpener.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(MyOpener.COL_TITLE, title);
+        values.put(MyOpener.COL_LINK, link);
+        db.insert(MyOpener.TABLE_NAME, null, values);
+
+        Toast.makeText(getContext(), "Item added to favorites", Toast.LENGTH_SHORT).show();
+
+        db.close();
     }
 }
