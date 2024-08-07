@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public boolean onQueryTextSubmit(String query) { // on submit
                 adapter.getFilter().filter(query); // filter based on the input
 
-                Snackbar.make(myList, "List queried", Snackbar.LENGTH_LONG).show(); // show snackbar
+                Snackbar.make(myList, R.string.snackbar_querymessage, Snackbar.LENGTH_LONG).show(); // show snackbar
                 return false;
             }
 
@@ -174,9 +174,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         else if (id == R.id.help) { // help functionality
             new AlertDialog.Builder(this)
-                    .setTitle("Help Menu")
-                    .setMessage("Click on a news item to get more information and a link to the story")
-                    .setPositiveButton("Ok", null)
+                    .setTitle(R.string.helpmenu_title)
+                    .setMessage(R.string.helpmenu_messagehome)
+                    .setPositiveButton(R.string.helpmenu_button, null)
                     .show();
         }
 

@@ -91,7 +91,7 @@ public class DetailsFragment extends Fragment {
         values.put(MyOpener.COL_LINK, link);
         db.insert(MyOpener.TABLE_NAME, null, values);
 
-        Toast.makeText(getContext(), "Item added to favorites", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), R.string.toast_addmessage, Toast.LENGTH_SHORT).show();
 
         db.close();
     }

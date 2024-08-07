@@ -36,7 +36,7 @@
             android:id="@+id/favorites_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add to Favorites"
+            android:text="@string/add_favorites"
             android:layout_marginTop="30dp"
             android:layout_gravity="center"/>
 

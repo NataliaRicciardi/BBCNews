@@ -7,15 +7,15 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="BBC News User"
+        android:text="@string/nav_header1"
         android:layout_marginTop="20dp"
-        android:textSize="20dp"/>
+        android:textSize="20sp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Version 1.1"
-        android:textSize="15dp"/>
+        android:text="@string/nav_header2"
+        android:textSize="15sp"/>
 
 
 </LinearLayout>

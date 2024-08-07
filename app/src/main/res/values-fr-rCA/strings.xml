@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">BBCNews</string>
+    <string name="main_title">Articles de BBC News</string>
+    <string name="search_text">Recherche d\'articles</string>
+    <string name="snackbar_querymessage">Liste consultée</string>
+    <string name="home_button">Accueil</string>
+    <string name="favorites_button">Favoris</string>
+    <string name="help_button">Aider</string>
+    <string name="nav_header1">BBC News Utilisateur</string>
+    <string name="nav_header2">Version 1.1</string>
+    <string name="add_favorites">Ajouter aux favoris</string>
+    <string name="toast_addmessage">Article ajouté aux favoris</string>
+    <string name="favorites_title">Favoris</string>
+    <string name="delete_favorite">Supprimer</string>
+    <string name="alertdialog_title">Supprimer l\'article</string>
+    <string name="alertdialog_body">Êtes-vous sûr de vouloir supprimer cet élément?</string>
+    <string name="alertdialog_no">Non</string>
+    <string name="alertdialog_yes">Oui</string>
+    <string name="toast_deletemessage">Article supprimé</string>
+    <string name="navigation_drawer_open">Ouvrir le tiroir de navigation</string>
+    <string name="navigation_drawer_close">Fermer le tiroir de navigation</string>
+    <string name="helpmenu_title">Menu d\'aide</string>
+    <string name="helpmenu_button">OK</string>
+    <string name="helpmenu_messagehome">Cliquez sur une nouvelle pour obtenir plus d\'informations et un lien vers l\'article.</string>
+    <string name="helpmenu_messagefav">Il s\'agit de votre liste de favoris. Tout ce que vous y ajoutez est sauvegardé pour plus tard.</string>
+</resources>

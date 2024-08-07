@@ -1,5 +1,26 @@
 <resources>
     <string name="app_name">BBCNews</string>
+    <string name="main_title">BBC News Articles</string>
+    <string name="search_text">Search articles</string>
+    <string name="snackbar_querymessage">List queried</string>
+    <string name="home_button">Home</string>
+    <string name="favorites_button">Favorites</string>
+    <string name="help_button">Help</string>
+    <string name="nav_header1">BBC News User</string>
+    <string name="nav_header2">Version 1.1</string>
+    <string name="add_favorites">Add to Favorites</string>
+    <string name="toast_addmessage">Item added to favorites</string>
+    <string name="favorites_title">Favorites</string>
+    <string name="delete_favorite">Delete</string>
+    <string name="alertdialog_title">Delete Item</string>
+    <string name="alertdialog_body">Are you sure you want to delete this item?</string>
+    <string name="alertdialog_no">No</string>
+    <string name="alertdialog_yes">Yes</string>
+    <string name="toast_deletemessage">Item Deleted</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="helpmenu_title">Help Menu</string>
+    <string name="helpmenu_button">OK</string>
+    <string name="helpmenu_messagehome">Click on a news item to get more information and a link to the story.</string>
+    <string name="helpmenu_messagefav">This is your favorites list. Everything you add to it is saved for later.</string>
 </resources>

@@ -104,9 +104,9 @@ public class FavoritesActivity extends AppCompatActivity implements NavigationVi
         }
         else if (id == R.id.help) {
             new AlertDialog.Builder(this)
-                    .setTitle("Help Menu")
-                    .setMessage("This is your favorites list. Everything you add to it is saved for later.")
-                    .setPositiveButton("Ok", null)
+                    .setTitle(R.string.helpmenu_title)
+                    .setMessage(R.string.helpmenu_messagefav)
+                    .setPositiveButton(R.string.helpmenu_button, null)
                     .show();
         }
 
@@ -202,12 +202,12 @@ class FavoritesAdapter extends BaseAdapter {
 
         deleteButton.setOnClickListener(v -> {
             new AlertDialog.Builder(context)
-                    .setTitle("Delete Item")
-                    .setMessage("Are you sure you want to delete this item?")
-                    .setPositiveButton("Yes", (dialog, which) -> {
+                    .setTitle(R.string.alertdialog_title)
+                    .setMessage(R.string.alertdialog_body)
+                    .setPositiveButton(R.string.alertdialog_yes, (dialog, which) -> {
                         deleteItem(favoritesItem.getId(), position);
                     })
-                    .setNegativeButton("No", null)
+                    .setNegativeButton(R.string.alertdialog_no, null)
                     .show();
         });
 
@@ -223,7 +223,7 @@ class FavoritesAdapter extends BaseAdapter {
 
         notifyDataSetChanged();
 
-        Toast.makeText(context, "Item Deleted", Toast.LENGTH_LONG).show();
+        Toast.makeText(context, R.string.toast_deletemessage, Toast.LENGTH_LONG).show();
     }
 }
 
