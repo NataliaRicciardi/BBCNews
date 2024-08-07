@@ -9,7 +9,6 @@ import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,90 +18,46 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.graphics.Insets;
 import androidx.core.view.GravityCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-
-import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FavoritesActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class FavoritesActivity extends BaseActivity {
 
-    private DrawerLayout drawerLayout;
     private List<BBCNewsItem> favoritesList;
     private FavoritesAdapter adapter;
 
-    SQLiteDatabase db;
+    private SQLiteDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_favorites);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        // call from base class to create toolbar
+        setupToolbarAndDrawer(R.layout.activity_favorites); // setup from parent activity
 
-        drawerLayout = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        ListView myList = findViewById(R.id.list_favorites); // get listview
 
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        favoritesList = new ArrayList<>(); // initialize array
 
-        ListView myList = findViewById(R.id.list_favorites);
+        loadDataFromDatabase(); // load database call
 
-        favoritesList = new ArrayList<>();
-
-        loadDataFromDatabase();
-
-        adapter = new FavoritesAdapter(this,  favoritesList);
-
+        adapter = new FavoritesAdapter(this,  favoritesList); // set adapter for list
         myList.setAdapter(adapter);
 
-
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.home) {
+        if (id == R.id.home) { // if home clicked
             Intent intent = new Intent(FavoritesActivity.this, MainActivity.class);
             startActivity(intent);
             return true;
         }
-        else if (id == R.id.help) {
+        else if (id == R.id.help) { // if help clicked
             new AlertDialog.Builder(this)
                     .setTitle(R.string.helpmenu_title)
                     .setMessage(R.string.helpmenu_messagefav)
@@ -116,25 +71,26 @@ public class FavoritesActivity extends AppCompatActivity implements NavigationVi
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.home) {
+        if (id == R.id.home) { // if home clicked
             Intent intent = new Intent(FavoritesActivity.this, MainActivity.class);
             startActivity(intent);
             return true;
         }
 
-        drawerLayout.closeDrawer(GravityCompat.START);
+        drawerLayout.closeDrawer(GravityCompat.START); // close navigation
         return true;
     }
 
     private void loadDataFromDatabase() { // get favorites from database
-        MyOpener dbOpener = new MyOpener(this);
-        db = dbOpener.getWritableDatabase();
+        MyOpener dbOpener = new MyOpener(this); // get instance of db opener
+        db = dbOpener.getWritableDatabase(); // get the database
 
-        String[] columns = {MyOpener.COL_ID, MyOpener.COL_TITLE, MyOpener.COL_LINK};
+        String[] columns = {MyOpener.COL_ID, MyOpener.COL_TITLE, MyOpener.COL_LINK}; // columns
 
         Cursor results = db.query(false, MyOpener.TABLE_NAME, columns, null, null,
-                null, null, null, null);
+                null, null, null, null); // query all data
 
+        // get column indexes from results
         int titleColIndex = results.getColumnIndex(MyOpener.COL_TITLE);
         int linkColIndex = results.getColumnIndex(MyOpener.COL_LINK);
         int idColIndex = results.getColumnIndex(MyOpener.COL_ID);
@@ -145,7 +101,7 @@ public class FavoritesActivity extends AppCompatActivity implements NavigationVi
                 String link = results.getString(linkColIndex);
                 long id = results.getLong(idColIndex);
 
-                favoritesList.add(new BBCNewsItem(id, title, link));
+                favoritesList.add(new BBCNewsItem(id, title, link)); // create new element in list
 
                 Log.d("FavoritesActivity", "Loaded item: ID=" + id + ", Title=" + title + ", Link=" + link);
 
@@ -172,40 +128,41 @@ class FavoritesAdapter extends BaseAdapter {
     }
 
     @Override
-    public int getCount() { return favoritesList.size(); }
+    public int getCount() { return favoritesList.size(); } // return number of items
 
     @Override
-    public Object getItem(int position) { return favoritesList.get(position); }
+    public Object getItem(int position) { return favoritesList.get(position); } // return position of item
 
     @Override
     public long getItemId(int position) { return position; }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
+        if (convertView == null) { // inflate view if no view already inflated
             convertView = inflater.inflate(R.layout.favorites_item_list, parent, false);
         }
 
+        // get view sfrom inflated layout
         TextView titleView = convertView.findViewById(R.id.title);
         TextView linkView = convertView.findViewById(R.id.link);
         Button deleteButton = convertView.findViewById(R.id.delete_button);
 
-        BBCNewsItem favoritesItem = favoritesList.get(position);
+        BBCNewsItem favoritesItem = favoritesList.get(position); // get the position of the item
 
-        titleView.setText(favoritesItem.getTitle());
+        titleView.setText(favoritesItem.getTitle()); // set title
 
         // linkify the link
         String link = favoritesItem.getLink();
         String linkHtml = "<a href=\"" + link + "\">" + link + "</a>";
-        linkView.setText(Html.fromHtml(linkHtml));
+        linkView.setText(Html.fromHtml(linkHtml)); // set link
         linkView.setMovementMethod(LinkMovementMethod.getInstance());
 
-        deleteButton.setOnClickListener(v -> {
-            new AlertDialog.Builder(context)
+        deleteButton.setOnClickListener(v -> { // when delete button clicked
+            new AlertDialog.Builder(context) // alert dialog
                     .setTitle(R.string.alertdialog_title)
                     .setMessage(R.string.alertdialog_body)
                     .setPositiveButton(R.string.alertdialog_yes, (dialog, which) -> {
-                        deleteItem(favoritesItem.getId(), position);
+                        deleteItem(favoritesItem.getId(), position); // if yes run deleteitem
                     })
                     .setNegativeButton(R.string.alertdialog_no, null)
                     .show();
@@ -215,14 +172,16 @@ class FavoritesAdapter extends BaseAdapter {
     }
 
     private void deleteItem(long id, int position) {
-        MyOpener dbOpener = new MyOpener(context);
+        MyOpener dbOpener = new MyOpener(context); // open and get database
         db = dbOpener.getWritableDatabase();
-        db.delete(MyOpener.TABLE_NAME, MyOpener.COL_ID + "=?", new String[] {String.valueOf(id)});
 
+        // delete from database and list
+        db.delete(MyOpener.TABLE_NAME, MyOpener.COL_ID + "=?", new String[] {String.valueOf(id)});
         favoritesList.remove(position);
 
-        notifyDataSetChanged();
+        notifyDataSetChanged(); // notify the change
 
+        // notify user of successful deletion with toast
         Toast.makeText(context, R.string.toast_deletemessage, Toast.LENGTH_LONG).show();
     }
 }

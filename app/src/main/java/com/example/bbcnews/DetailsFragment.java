@@ -15,11 +15,6 @@ import android.widget.TextView;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link DetailsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class DetailsFragment extends Fragment {
 
     private static final String ARG_TITLE = "title";
@@ -60,12 +55,14 @@ public class DetailsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_details, container, false);
 
+        // get all elements of the layout
         TextView viewTitle = view.findViewById(R.id.title_text);
         TextView viewDescription = view.findViewById(R.id.description_text);
         TextView viewLink = view.findViewById(R.id.link_text);
         Button addToFavoritesButton = view.findViewById(R.id.favorites_button);
 
         if (getArguments() != null) {
+            // set textviews
             viewTitle.setText(title);
             viewDescription.setText(description);
 
@@ -75,7 +72,7 @@ public class DetailsFragment extends Fragment {
             viewLink.setMovementMethod(LinkMovementMethod.getInstance());
         }
 
-        addToFavoritesButton.setOnClickListener(v -> addToFavorites());
+        addToFavoritesButton.setOnClickListener(v -> addToFavorites()); // onclick run code
 
         return view;
     }
@@ -83,9 +80,10 @@ public class DetailsFragment extends Fragment {
     private void addToFavorites() {
         if (getContext() == null) return;
 
-        MyOpener dbOpener = new MyOpener(getContext());
+        MyOpener dbOpener = new MyOpener(getContext()); // get database opener and open database
         SQLiteDatabase db = dbOpener.getWritableDatabase();
 
+        // insert values into database
         ContentValues values = new ContentValues();
         values.put(MyOpener.COL_TITLE, title);
         values.put(MyOpener.COL_LINK, link);
